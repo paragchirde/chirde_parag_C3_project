@@ -66,7 +66,9 @@ public class Restaurant {
         return name;
     }
 
-    public Integer orderTotal(List<String> items){
-        return null;
+    public Double orderTotal(List<String> items){
+        double total = 0;
+        total = menu.stream().filter(menuItem -> items.contains(menuItem.getName())).mapToInt(item -> item.getPrice()).sum();
+        return total;
     }
 }
