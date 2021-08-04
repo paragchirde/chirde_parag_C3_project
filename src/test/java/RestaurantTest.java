@@ -1,25 +1,34 @@
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
+
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class RestaurantTest {
     Restaurant restaurant;
-    //REFACTOR ALL THE REPEATED LINES OF CODE
-
-    //>>>>>>>>>>>>>>>>>>>>>>>>>OPEN/CLOSED<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-    //-------FOR THE 2 TESTS BELOW, YOU MAY USE THE CONCEPT OF MOCKING, IF YOU RUN INTO ANY TROUBLE
     @Test
     public void is_restaurant_open_should_return_true_if_time_is_between_opening_and_closing_time(){
-        //WRITE UNIT TEST CASE HERE
+        Restaurant restaurantR = Mockito.spy(restaurant);
+        boolean status = restaurantR.isRestaurantOpen();
+        Mockito.when(restaurantR.getCurrentTime()).thenReturn(restaurant.openingTime);
+        assertTrue(status);
     }
 
     @Test
     public void is_restaurant_open_should_return_false_if_time_is_outside_opening_and_closing_time(){
-        //WRITE UNIT TEST CASE HERE
-
+        Restaurant restaurantR = Mockito.spy(restaurant);
+        Mockito.when(restaurantR.getCurrentTime()).thenReturn(restaurant.openingTime.minusMinutes(30));
+        boolean status = restaurantR.isRestaurantOpen();
+        assertFalse(status);
+        Mockito.when(restaurantR.getCurrentTime()).thenReturn(restaurant.closingTime.plusHours(1));
+        status = restaurantR.isRestaurantOpen();
+        assertFalse(status);
     }
 
     //<<<<<<<<<<<<<<<<<<<<<<<<<OPEN/CLOSED>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -62,4 +71,18 @@ class RestaurantTest {
                 ()->restaurant.removeFromMenu("French fries"));
     }
     //<<<<<<<<<<<<<<<<<<<<<<<MENU>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    
+    //<<<<<<<<<<<<<<<<<<<<<<<ORDER TOTAL>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    @Test
+    public void order_total_should_return_total_value_after_adding_items(){
+        ArrayList<String> items = new ArrayList<String>();
+        items.add("Item 1");
+        items.add("Item 2");
+        items.add("Item 3");
+        items.add("Item 4");
+        Integer total = restaurant.orderTotal(items);
+        assertEquals(699, total);
+    }
+
+
 }

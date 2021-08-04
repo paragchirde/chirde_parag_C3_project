@@ -18,11 +18,11 @@ public class Restaurant {
     }
 
     public boolean isRestaurantOpen() {
-        LocalTime x = getCurrentTime();
-        if(closingTime.isAfter(x)){
-            return true;
-        } else {
+        LocalTime current = getCurrentTime();
+        if(current.isAfter(openingTime) && current.isBefore(openingTime)){
             return false;
+        } else {
+            return true;
         }
     }
 
@@ -66,4 +66,7 @@ public class Restaurant {
         return name;
     }
 
+    public Integer orderTotal(List<String> items){
+        return null;
+    }
 }
